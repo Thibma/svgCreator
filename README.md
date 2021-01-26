@@ -1,3 +1,3 @@
 # svgCreator
 
-g++ main.cpp shapes/point.cpp -o main.o
+g++ main.cpp shapes/point.cpp shapes/rectangle.cpp -o main.o

@@ -6,7 +6,11 @@
 
 class Rectangle : Shape {
 public:
-    Rectangle(Point point, int width, int height);
+    Rectangle(Point point, int width, int height, int stroke, Color strokeColor, Color fillColor);
+
+    Point getPoint() const;
+    int getWidth() const;
+    int getHeight() const;
 
 private:
     Point m_point;

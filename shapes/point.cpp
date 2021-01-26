@@ -1,14 +1,19 @@
 #include "point.hpp"
 
 Point::Point(int x, int y) {
-    m_x = x;
-    m_y = y;
+    this->m_x = x;
+    this->m_y = y;
+}
+
+Point::Point() {
+    this->m_x = 0;
+    this->m_y = 0;
 }
 
 int Point::getX() const {
-    return m_x;
+    return this->m_x;
 }
 
 int Point::getY() const {
-    return m_y;
+    return this->m_y;
 }

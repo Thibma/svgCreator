@@ -1,6 +1,9 @@
 #include <iostream>
 
 #include "shapes/point.hpp"
+#include "shapes/rectangle.hpp"
+
+#include "shapes/color.hpp"
 
 using namespace std;
 
@@ -34,7 +37,9 @@ void commands() {
         }
 }
 
-int main() {
+int main() { 
+    cout << colors[red];
+
     commands();
     return 1;
 }
