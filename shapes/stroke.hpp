@@ -4,7 +4,7 @@
 #include "shape.hpp"
 #include "point.hpp"
 
-class Stroke {
+class Stroke : Shape {
 private:
     Point m_firstPoint;
     Point m_secondPoint;

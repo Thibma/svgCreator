@@ -4,22 +4,24 @@
 #include <map>
 #include <string>
 
-enum Color {
-    red,
-    blue,
-    green,
-    white,
-    dark,
-    transparent
+class Color {
+
+public:
+    static const Color RED;
+    static const Color BLUE;
+    static const Color GREEN;
+    static const Color WHITE;
+    static const Color DARK;
+    static const Color TRANSPARENT;
+
+    std::string getString();
+    Color();
+
+private:
+    std::string m_string;
+    Color(std::string svgString);
+
 };
 
-std::map<Color, std::string> colors = {
-    { red, "red" },
-    { blue, "blue" },
-    { green, "green" },
-    { white, "white" },
-    { dark, "dark" },
-    { transparent, "transparent" }
-};
 
 #endif

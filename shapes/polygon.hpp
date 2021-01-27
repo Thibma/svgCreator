@@ -13,6 +13,6 @@ private:
 
 public:
     Polygon(int numbersOfPoints, std::vector<Point> points, int stroke, Color strokeColor, Color fillColor);
-}
+};
 
 #endif
