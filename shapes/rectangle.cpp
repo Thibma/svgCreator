@@ -6,6 +6,10 @@ Rectangle::Rectangle(Point point, int width, int height, int stroke, Color strok
     this->m_width = width;
 }
 
+Rectangle::~Rectangle() {
+    
+}
+
 Point Rectangle::getPoint() const {
     return this->m_point;
 }

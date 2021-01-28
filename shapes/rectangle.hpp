@@ -4,9 +4,10 @@
 #include "shape.hpp"
 #include "point.hpp"
 
-class Rectangle : Shape {
+class Rectangle : public Shape {
 public:
     Rectangle(Point point, int width, int height, int stroke, Color strokeColor, Color fillColor);
+    virtual ~Rectangle();
 
     Point getPoint() const;
     int getWidth() const;

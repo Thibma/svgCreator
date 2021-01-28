@@ -4,3 +4,7 @@ Polygon::Polygon(int numbersOfPoints, std::vector<Point> points, int stroke, Col
     this->m_numbersOfPoints = numbersOfPoints;
     this->m_points = points;
 }
+
+Polygon::~Polygon() {
+    
+}

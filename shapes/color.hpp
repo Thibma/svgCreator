@@ -11,8 +11,10 @@ public:
     static const Color BLUE;
     static const Color GREEN;
     static const Color WHITE;
-    static const Color DARK;
+    static const Color BLACK;
     static const Color TRANSPARENT;
+
+    static const Color NOCOLOR;
 
     std::string getString();
     Color();

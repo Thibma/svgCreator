@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <typeinfo>
 
 #include "shapes/point.hpp"
 
@@ -22,5 +23,14 @@ void createADraw();
 
 void drawEditor(Svg svg);
 
-Shape createShape();
+void createShape(vector<vector<Shape *> > &shapes);
+
+Rectangle *createRectangle();
+Circle *createCircle();
+Stroke *createStroke();
+Polygon *createPolygon();
+
+int getValueFromUser(string userMessage);
+string getStringFromUser(string userMessage);
+Color getColor(string userMessage);
 #endif

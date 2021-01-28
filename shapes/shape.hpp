@@ -11,6 +11,11 @@ private:
     
 public:
     Shape(int stroke, Color strokeColor, Color fillColor);
+    virtual ~Shape();
+
+    int getStroke();
+    Color getStrokeColor();
+    Color getFillColor();
 
 };
 

@@ -4,3 +4,7 @@ Stroke::Stroke(Point firstPoint, Point secondPoint, int stroke, Color strokeColo
     this->m_firstPoint = firstPoint;
     this->m_secondPoint = secondPoint;
 }
+
+Stroke::~Stroke() {
+    
+}
