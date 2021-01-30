@@ -8,3 +8,11 @@ Stroke::Stroke(Point firstPoint, Point secondPoint, int stroke, Color strokeColo
 Stroke::~Stroke() {
     
 }
+
+Point Stroke::getFirstPoint() {
+    return this->m_firstPoint;
+}
+
+Point Stroke::getSecondPoint() {
+    return this->m_secondPoint;
+}

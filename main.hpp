@@ -5,6 +5,7 @@
 #include <string>
 #include <typeinfo>
 
+
 #include "shapes/point.hpp"
 
 #include "shapes/circle.hpp"
@@ -24,11 +25,12 @@ void createADraw();
 void drawEditor(Svg svg);
 
 void createShape(vector<vector<Shape *> > &shapes);
-
 Rectangle *createRectangle();
 Circle *createCircle();
 Stroke *createStroke();
 Polygon *createPolygon();
+
+void displayDraw(Svg svg, vector<vector<Shape *> > shapes);
 
 int getValueFromUser(string userMessage);
 string getStringFromUser(string userMessage);

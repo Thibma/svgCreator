@@ -8,3 +8,11 @@ Polygon::Polygon(int numbersOfPoints, std::vector<Point> points, int stroke, Col
 Polygon::~Polygon() {
     
 }
+
+int Polygon::getNumbersOfPoints() {
+    return this->m_numbersOfPoints;
+}
+
+std::vector<Point> Polygon::getPoints() {
+    return this->m_points;
+}

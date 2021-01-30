@@ -14,6 +14,9 @@ private:
 public:
     Polygon(int numbersOfPoints, std::vector<Point> points, int stroke, Color strokeColor, Color fillColor);
     virtual ~Polygon();
+
+    int getNumbersOfPoints();
+    std::vector<Point> getPoints();
 };
 
 #endif

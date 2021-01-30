@@ -16,6 +16,10 @@ private:
 public:
     Svg(int width, int height, std::string name);
     Svg(int width, int height, std::string name, std::vector<std::vector<Shape *> > shapes);
+
+    std::string getName();
+    int getWidth();
+    int getHeight();
 };
 
 #endif

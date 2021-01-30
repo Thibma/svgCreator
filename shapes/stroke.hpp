@@ -12,6 +12,9 @@ private:
 public:
     Stroke(Point firstPoint, Point secondPoint, int stroke, Color strokeColor, Color fillColor);
     virtual ~Stroke();
+
+    Point getFirstPoint();
+    Point getSecondPoint();
 };
 
 

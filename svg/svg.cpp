@@ -12,3 +12,15 @@ Svg::Svg(int width, int height, std::string name, std::vector<std::vector<Shape 
     this->m_name = name;
     this->m_shapes = shapes;
 }
+
+std::string Svg::getName() {
+    return this->m_name;
+}
+
+int Svg::getWidth() {
+    return this->m_width;
+}
+
+int Svg::getHeight() {
+    return this->m_height;
+}

@@ -103,7 +103,8 @@ void drawEditor(Svg svg) {
             break;
         }
         case 2:
-            cout << "Afficher" << endl << endl;
+            cout << "Afficher le dessin" << endl << endl;
+            displayDraw(svg, shapes);
             break;
         case 3:
             cout << "Fusionner" << endl << endl;
@@ -129,7 +130,7 @@ void drawEditor(Svg svg) {
 }
 
 // Menu 4.1 (1 - Créer une forme)
-void createShape(vector<vector<Shape *> >&shapes) {
+void createShape(vector<vector<Shape *> > &shapes) {
     int command;
 
     cout << " || CRÉATION D'UNE FORME ||" << endl << endl;
@@ -178,9 +179,10 @@ void createShape(vector<vector<Shape *> >&shapes) {
             break;
         }
 
-    } while(command >= 0 && command <= 5);
+    } while(command < 0 && command > 5);
 }
 
+// Menu 4.1.1 (1 - Créer un rectangle)
 Rectangle *createRectangle() {
     int x, y;
     int width, height;
@@ -201,6 +203,7 @@ Rectangle *createRectangle() {
     return new Rectangle(Point(x, y), width, height, stroke, strokeColor, fillColor);
 }
 
+// Menu 4.1.2 (2 - Créer un cercle)
 Circle *createCircle() {
     int x, y;
     int radius;
@@ -220,6 +223,7 @@ Circle *createCircle() {
     return new Circle(radius, Point(x, y), stroke, strokeColor, fillColor);
 }
 
+// Menu 4.1.3 (3 - Créer un segment)
 Stroke *createStroke() {
     int firstPointX, firstPointY;
     int secondPointX, secondPointY;
@@ -238,6 +242,7 @@ Stroke *createStroke() {
     return new Stroke(Point(firstPointX, firstPointY), Point(secondPointX, secondPointY), stroke, strokeColor, fillColor);
 }
 
+// Menu 4.1.4 (4 - Créer un polygone)
 Polygon *createPolygon() {
     int numbersOfPoints;
     vector<Point> points;
@@ -247,7 +252,7 @@ Polygon *createPolygon() {
     
     numbersOfPoints = getValueFromUser("Choisir le nombres de points du polygone :");
 
-    for (int i = 0; i <= numbersOfPoints; i++) {
+    for (int i = 0; i < numbersOfPoints; i++) {
         int x, y;
         x = getValueFromUser("Choisir la coordonnée 'x' du point n°" + to_string(i+1) + ": ");
         y = getValueFromUser("Choisir la coordonnée 'y' du point n°" + to_string(i+1) + ": ");
@@ -259,6 +264,80 @@ Polygon *createPolygon() {
     fillColor = getColor("Choisissez la couleur de fond :");
 
     return new Polygon(numbersOfPoints, points, stroke, strokeColor, fillColor);
+}
+
+// Menu 4.2 (2 - Afficher le contenu d'un dessin)
+void displayDraw(Svg svg, vector<vector<Shape *> > shapes) {
+    cout << " || AFFICHAGE DU DESSIN ||" << endl << endl;
+    cout << "Nom : " << svg.getName() << endl; 
+    cout << "Largeur : " << svg.getWidth() << endl;
+    cout << "Hauteur : " << svg.getHeight() << endl;
+    cout << "Formes : {" << endl;
+    for (int i = 0; i < shapes.size(); i++) {
+        for (int j = 0; j < shapes[i].size(); j++) {
+            switch (i)
+            {
+            case 0: {
+                Rectangle *rect = dynamic_cast<Rectangle*>(shapes[0][j]);
+                cout << "   < Rectangle > { " 
+                << "x: \"" << rect->getPoint().getX()
+                << "\", y: \"" << rect->getPoint().getY()
+                << "\", largeur: \"" << rect->getWidth()
+                << "\", hauteur: \"" << rect->getHeight()
+                << "\", taille-contour: \"" << rect->getStroke()
+                << "\", couleur-contour: \"" << rect->getStrokeColor().getString()
+                << "\", couleur-fond: \"" << rect->getFillColor().getString()
+                << "\" }" << endl;
+                break;
+            }
+            case 1: {
+                Circle *circle = dynamic_cast<Circle*>(shapes[1][j]);
+                cout << "   < Cercle > { " 
+                << "x: \"" << circle->getCenter().getX()
+                << "\", y: \"" << circle->getCenter().getY()
+                << "\", rayon: \"" << circle->getRadius()
+                << "\", taille-contour: \"" << circle->getStroke()
+                << "\", couleur-contour: \"" << circle->getStrokeColor().getString()
+                << "\", couleur-fond: \"" << circle->getFillColor().getString()
+                << "\" }" << endl;
+                break;
+            }
+            case 2: {
+                Stroke *stroke = dynamic_cast<Stroke*>(shapes[2][j]);
+                cout << "   < Segment > { " 
+                << "x1: \"" << stroke->getFirstPoint().getX()
+                << "\", y1: \"" << stroke->getFirstPoint().getY()
+                << "\", x2: \"" << stroke->getSecondPoint().getX()
+                << "\", y2: \"" << stroke->getSecondPoint().getY()
+                << "\", taille-contour: \"" << stroke->getStroke()
+                << "\", couleur-contour: \"" << stroke->getStrokeColor().getString()
+                << "\", couleur-fond: \"" << stroke->getFillColor().getString()
+                << "\" }" << endl;
+                break;
+            }
+            case 3: {
+                Polygon *polygon = dynamic_cast<Polygon*>(shapes[3][j]);
+                cout << "   < Polygone > { " 
+                << "Nombre de points: \"" << polygon->getNumbersOfPoints()
+                << "\", Points: { \"" << endl;
+                for (int k = 0; k < polygon->getPoints().size(); k++) {
+                    cout << "       x" << k+1 << ": \"" << polygon->getPoints()[k].getX()
+                    << "\", y" << k+1 << ": \"" << polygon->getPoints()[k].getY() << "\"" << endl; 
+                }
+                cout << "   }\"," << endl << "taille-contour: \"" << polygon->getStroke()
+                << "\", couleur-contour: \"" << polygon->getStrokeColor().getString()
+                << "\", couleur-fond: \"" << polygon->getFillColor().getString()
+                << "\" }" << endl;
+                break;
+            }
+            default:
+                break;
+            }
+        }
+    }
+    cout << "Appuyez sur \"Entrée\" pour continuer..." << endl;
+    fflush(stdin);
+    while (getchar() != '\n');
 }
 
 int getValueFromUser(string userMessage) {
