@@ -24,3 +24,11 @@ int Svg::getWidth() {
 int Svg::getHeight() {
     return this->m_height;
 }
+
+std::vector<std::vector<Shape *> > &Svg::getShapes() {
+    return this->m_shapes;
+}
+
+void Svg::setShapes(std::vector<std::vector<Shape *> > shapes) {
+    this->m_shapes = shapes;
+}

@@ -20,7 +20,9 @@
 using namespace std;
 
 void firstMenu();
+
 void createADraw();
+void loadADraw();
 
 void drawEditor(Svg svg);
 
@@ -29,8 +31,11 @@ Rectangle *createRectangle();
 Circle *createCircle();
 Stroke *createStroke();
 Polygon *createPolygon();
-
-void displayDraw(Svg svg, vector<vector<Shape *> > shapes);
+void displayDraw(Svg svg);
+void fusionDraw(Svg &svg);
+void moveShapes(vector<vector<Shape *> > &shapes);
+void upScaleShapes(vector<vector<Shape *> > &shapes);
+void saveSvg(Svg svg);
 
 int getValueFromUser(string userMessage);
 string getStringFromUser(string userMessage);

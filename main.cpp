@@ -17,8 +17,7 @@ void firstMenu() {
         
         cout << "1 - Créer un dessin" << endl;
         cout << "2 - Charger un dessin" << endl;
-        cout << "3 - Afficher le contenu d'un dessin" << endl;
-        cout << "4 - Quitter le programme" << endl << "-> ";
+        cout << "3 - Quitter le programme" << endl << "-> ";
 
         if (!(cin >> command)) {
             cin.clear();
@@ -32,18 +31,17 @@ void firstMenu() {
             break;
         case 2:
             cout << "Charger" << endl << endl;
+            // TODO
+            loadADraw();
             break;
         case 3:
-            cout << "Afficher" << endl << endl;
-            break;
-        case 4:
             cout << "Quitter" << endl << endl;
             return;
         default:
             break;
         }
 
-    } while (command != 4);
+    } while (command != 3);
 
 }
 
@@ -63,6 +61,16 @@ void createADraw() {
     drawEditor(svg);
 }
 
+// Menu 2.2 (2 - Charger un dessin)
+void loadADraw() {
+    /*
+        Tu vas utiliser la fonction pour charger un objet Svg (avec getFile etc)
+        Si le fichier est bien un fichier svg, on récupère toutes les infos avec
+        la fonction de "Parser" et on stocke le tout dans un objet SVG et on appele
+        la fonction drawEditor()
+    */
+}
+
 // Menu 3.1 (Edition d'un dessin)
 void drawEditor(Svg svg) {
     int command;
@@ -78,6 +86,8 @@ void drawEditor(Svg svg) {
         { strokes.begin(), strokes.end() },
         { polygons.begin(), polygons.end() }
     };
+
+    svg.setShapes(shapes);
 
     cout << " || ÉDITION D'UN DESSIN ||" << endl << endl;
 
@@ -99,27 +109,37 @@ void drawEditor(Svg svg) {
         switch (command) {
         case 1: {
             cout << "Créer une forme" << endl << endl;
-            createShape(shapes);
+            createShape(svg.getShapes());
             break;
         }
         case 2:
             cout << "Afficher le dessin" << endl << endl;
-            displayDraw(svg, shapes);
+            displayDraw(svg);
             break;
         case 3:
             cout << "Fusionner" << endl << endl;
+            fusionDraw(svg);
+            // TODO
             break;
         case 4:
             cout << "Décaler" << endl << endl;
+            moveShapes(svg.getShapes());
+            // TODO
             break;
         case 5:
             cout << "Agrandir" << endl << endl;
+            upScaleShapes(svg.getShapes());
+            // TODO
             break;
         case 6:
             cout << "Sauvegarder" << endl << endl;
+            saveSvg(svg);
+            // TODO
             break;
         case 7:
             cout << "Annuler" << endl << endl;
+            // TODO
+            // Demander à l'utilisateur si il est sur d'annuler
             return;
         default:
             break;
@@ -267,18 +287,18 @@ Polygon *createPolygon() {
 }
 
 // Menu 4.2 (2 - Afficher le contenu d'un dessin)
-void displayDraw(Svg svg, vector<vector<Shape *> > shapes) {
+void displayDraw(Svg svg) {
     cout << " || AFFICHAGE DU DESSIN ||" << endl << endl;
     cout << "Nom : " << svg.getName() << endl; 
     cout << "Largeur : " << svg.getWidth() << endl;
     cout << "Hauteur : " << svg.getHeight() << endl;
     cout << "Formes : {" << endl;
-    for (int i = 0; i < shapes.size(); i++) {
-        for (int j = 0; j < shapes[i].size(); j++) {
+    for (int i = 0; i < svg.getShapes().size(); i++) {
+        for (int j = 0; j < svg.getShapes()[i].size(); j++) {
             switch (i)
             {
             case 0: {
-                Rectangle *rect = dynamic_cast<Rectangle*>(shapes[0][j]);
+                Rectangle *rect = dynamic_cast<Rectangle*>(svg.getShapes()[0][j]);
                 cout << "   < Rectangle > { " 
                 << "x: \"" << rect->getPoint().getX()
                 << "\", y: \"" << rect->getPoint().getY()
@@ -291,7 +311,7 @@ void displayDraw(Svg svg, vector<vector<Shape *> > shapes) {
                 break;
             }
             case 1: {
-                Circle *circle = dynamic_cast<Circle*>(shapes[1][j]);
+                Circle *circle = dynamic_cast<Circle*>(svg.getShapes()[1][j]);
                 cout << "   < Cercle > { " 
                 << "x: \"" << circle->getCenter().getX()
                 << "\", y: \"" << circle->getCenter().getY()
@@ -303,7 +323,7 @@ void displayDraw(Svg svg, vector<vector<Shape *> > shapes) {
                 break;
             }
             case 2: {
-                Stroke *stroke = dynamic_cast<Stroke*>(shapes[2][j]);
+                Stroke *stroke = dynamic_cast<Stroke*>(svg.getShapes()[2][j]);
                 cout << "   < Segment > { " 
                 << "x1: \"" << stroke->getFirstPoint().getX()
                 << "\", y1: \"" << stroke->getFirstPoint().getY()
@@ -316,7 +336,7 @@ void displayDraw(Svg svg, vector<vector<Shape *> > shapes) {
                 break;
             }
             case 3: {
-                Polygon *polygon = dynamic_cast<Polygon*>(shapes[3][j]);
+                Polygon *polygon = dynamic_cast<Polygon*>(svg.getShapes()[3][j]);
                 cout << "   < Polygone > { " 
                 << "Nombre de points: \"" << polygon->getNumbersOfPoints()
                 << "\", Points: { \"" << endl;
@@ -340,13 +360,59 @@ void displayDraw(Svg svg, vector<vector<Shape *> > shapes) {
     while (getchar() != '\n');
 }
 
+// Menu 4.3 (3 - Fusionner avec un autre dessin)
+void fusionDraw(Svg &svg) {
+    /*
+        On passe l'adresse du dessin (pour directement le modifier)
+        On appelle la fonction pour importer un fichier SVG
+        On le parse et on récupère les infos. Si le dessin est plus grand, on prend
+        ses dimensions, on récupère ses "shapes"
+        On boucle et on ajoute les shapes du dessin importé dans le dessin original 
+    */
+}
+
+// Menu 4.4 (4 - Décaler tous les éléments du dessin)
+void moveShapes(vector<vector<Shape *> > &shapes) {
+    /*
+        On passe l'adresse des formes (pour directement le modifier)
+        On demande a l'utilisateur un point (x,y) qui va décaler les points
+        On fait une boucle qui va modifier tous les points de chaque shapes
+        (rectangle : x et y,
+         cercle : centre,
+         segment : les deux points,
+         polygone : tous les points)
+    */
+}
+
+// Menu 4.5 (5 - Agrandir tous les éléments du dessin)
+void upScaleShapes(vector<vector<Shape *> > &shapes) {
+    /*
+        On passe l'adresse des formes (pour directement le modifier)
+        On demande à l'utilisateur un facteur d'agrandissement (positif obligé)
+        On fait une boucle qui va modifier les tailles de chaque shapes en multipliant par le facteur
+        (rectangle : width et height,
+         cercle : rayon,
+         segment : les deux points (mais jsp comment),
+         polygone : tous les points (mais jsp comment))
+    */
+}
+
+void saveSvg(Svg svg) {
+    /*
+        On va créer un fichier.
+        A l'aide d'une fonction qui va parser nos objets, on créer une string qui va
+        faire le contenu du fichier.
+        On prends en exemple le svg
+    */
+}
+
 int getValueFromUser(string userMessage) {
     int value;
     cout << userMessage << endl << "-> ";
     while(!(cin >> value)) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Valeur non valide" << endl;
+        cout << "Valeur non valide" << endl << "-> ";
     }
     return value;
 }
@@ -376,7 +442,7 @@ Color getColor(string userMessage) {
         if (!(cin >> command)) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Valeur non valide" << endl;
+            cout << "Valeur non valide" << endl << "-> ";
         }
 
         switch (command)

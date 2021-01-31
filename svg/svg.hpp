@@ -20,6 +20,9 @@ public:
     std::string getName();
     int getWidth();
     int getHeight();
+
+    std::vector<std::vector<Shape *> > &getShapes();
+    void setShapes(std::vector<std::vector<Shape *> > shapes);
 };
 
 #endif
