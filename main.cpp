@@ -58,6 +58,21 @@ void createADraw() {
     name = getStringFromUser("Choisir un nom pour le dessin :");
 
     Svg svg(width, height, name);
+
+    vector<Rectangle *> rectangles;
+    vector<Circle *> circles;
+    vector<Stroke *> strokes;
+    vector<Polygon *> polygons;
+
+    vector<vector<Shape *> >shapes = {
+        { rectangles.begin(), rectangles.end() },
+        { circles.begin(), circles.end() },
+        { strokes.begin(), strokes.end() },
+        { polygons.begin(), polygons.end() }
+    };
+
+    svg.setShapes(shapes);
+
     drawEditor(svg);
 }
 
@@ -74,20 +89,6 @@ void loadADraw() {
 // Menu 3.1 (Edition d'un dessin)
 void drawEditor(Svg svg) {
     int command;
-
-    vector<Rectangle *> rectangles;
-    vector<Circle *> circles;
-    vector<Stroke *> strokes;
-    vector<Polygon *> polygons;
-
-    vector<vector<Shape *> >shapes = {
-        { rectangles.begin(), rectangles.end() },
-        { circles.begin(), circles.end() },
-        { strokes.begin(), strokes.end() },
-        { polygons.begin(), polygons.end() }
-    };
-
-    svg.setShapes(shapes);
 
     cout << " || ÉDITION D'UN DESSIN ||" << endl << endl;
 
