@@ -78,12 +78,331 @@ void createADraw() {
 
 // Menu 2.2 (2 - Charger un dessin)
 void loadADraw() {
-    /*
-        Tu vas utiliser la fonction pour charger un objet Svg (avec getFile etc)
-        Si le fichier est bien un fichier svg, on récupère toutes les infos avec
-        la fonction de "Parser" et on stocke le tout dans un objet SVG et on appele
-        la fonction drawEditor()
-    */
+    std::string filename;
+    bool menu = true;
+
+    do{
+        cout << "Veuillez sélectionner un fichier .svg" << endl << "-> ";
+
+        if (!(cin >> filename)) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Valeur non valide" << endl << "-> ";
+        }
+
+        menu = filename.find(".svg") == std::string::npos;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Valeur non valide" << endl << "-> ";
+    } while(menu);   
+
+    Svg svg = parser(filename);
+    drawEditor(svg);
+}
+
+Svg parser(std::string filename) {
+    std::ifstream infile(filename);
+    std::string line;
+    vector<Rectangle *> rectangles;
+    vector<Circle *> circles;
+    vector<Polygon *> polygons;
+    vector<Stroke *> strokes;
+    
+    try{
+        if(!std::getline(infile, line) || !verifyStartFile(line)){
+            throw "Fichier illisible";
+        }
+        Svg svg = getSvgFromLine(line, filename);
+
+        while (std::getline(infile, line))
+        {
+            std::cout << line << std::endl;
+            std::istringstream iss(line);
+
+            try {
+                if(isComponent(line, "rect")){
+                    Rectangle *rectangle = getRectangleFromLine(line);
+                    rectangles.push_back(rectangle);
+                }          
+
+                if(isComponent(line, "circle")){
+                    Circle *circle = getCircleFromLine(line);
+                    circles.push_back(circle);
+                }   
+
+                if(isComponent(line, "polygon")){
+                    Polygon *polygon = getPolygonFromLine(line);
+                    polygons.push_back(polygon);
+                }
+
+                if(isComponent(line, "line")){
+                    Stroke *stroke = getStrokeFromLine(line);
+                    strokes.push_back(stroke);
+                }
+
+            } catch(const char* e){
+                std::cout << e << endl;
+            }
+        }
+
+        vector<vector<Shape *> >shapes = {
+            { rectangles.begin(), rectangles.end() },
+            { circles.begin(), circles.end() },
+            { strokes.begin(), strokes.end() },
+            { polygons.begin(), polygons.end() }
+        };
+
+        svg.setShapes(shapes);
+        displayDraw(svg);
+        return svg;
+    
+    } catch(const char *e){
+        std::cout << e << endl;
+    }
+}
+
+Svg getSvgFromLine(std::string line, std::string name){
+    int width = getIntProperty(line, "width");
+    if(!width) throw "Width missing";
+
+    int height = getIntProperty(line, "height");
+    if(!height) throw "Height missing";
+
+    return Svg(width, height, name);
+}
+
+Rectangle *getRectangleFromLine(std::string line){
+    int width = getIntProperty(line, "width");
+    if(!width) throw "Width missing";
+
+    int height = getIntProperty(line, "height");
+    if(!height) throw "Height missing";
+
+    int x = getIntProperty(line, "x");
+    if(!x) throw "X missing";
+
+    int y = getIntProperty(line, "y");   
+    if(!y) throw "Y missing";
+
+    int strokeWidth = getIntProperty(line, "stroke-width");    
+    if(!strokeWidth) throw "Stroke Width missing";
+
+    Color stroke = getColorFromLine(line, "stroke");
+    Color fill = getColorFromLine(line, "fill");
+
+    return new Rectangle(Point(x, y), width, height, strokeWidth, stroke, fill);
+}
+
+Circle *getCircleFromLine(std::string line){
+    int r = getIntProperty(line, "r");
+    if(!r) throw "Radius missing";
+
+    int x = getIntProperty(line, "cx");
+    if(!x) throw "X missing";
+
+    int y = getIntProperty(line, "cy");
+    if(!y) throw "Y missing";
+
+    int strokeWidth = getIntProperty(line, "stroke-width");    
+    if(!strokeWidth) throw "Stroke Width missing";
+    
+    Color stroke = getColorFromLine(line, "stroke");
+    Color fill = getColorFromLine(line, "fill");
+
+    return new Circle(r, Point(x, y), strokeWidth, stroke, fill);
+}
+
+Polygon *getPolygonFromLine(std::string line){
+    vector<Point> points = getPointsFromLine(line);
+    int strokeWidth = getIntProperty(line, "stroke-width");    
+    if(!strokeWidth) throw "Stroke Width missing";
+
+    Color stroke = getColorFromLine(line, "stroke");
+    Color fill = getColorFromLine(line, "fill");
+
+    return new Polygon(points.size(), points, strokeWidth, stroke, fill);
+}
+
+Stroke *getStrokeFromLine(std::string line){
+    int x1 = getIntProperty(line, "x1");
+    if(!x1) throw "Stroke Width missing";
+
+    int y1 = getIntProperty(line, "y1");
+    if(!y1) throw "Stroke Width missing";
+
+    int x2 = getIntProperty(line, "x2");
+    if(!x2) throw "Stroke Width missing";
+
+    int y2 = getIntProperty(line, "y2");
+    if(!y2) throw "Stroke Width missing";
+
+    int strokeWidth = getIntProperty(line, "stroke-width");    
+    if(!strokeWidth) throw "Stroke Width missing";
+
+    Color stroke = getColorFromLine(line, "stroke");
+    Color fill = getColorFromLine(line, "fill"); 
+
+    return new Stroke(Point(x1, y1), Point(x2, y2), strokeWidth, stroke, stroke);
+}
+
+vector<Point> getPointsFromLine(std::string line){
+    vector<Point> points;
+    vector<std::string> strPoints;
+    std::string toFindStart = " points=\"";
+    std::size_t start = line.find(toFindStart);
+    std::size_t end = line.find('"', toFindStart.size() + start);
+
+    std::string property = line.substr(start + toFindStart.size(), end - start - 1 - toFindStart.size());
+    start = 0;
+    end = 0;
+    while(true){
+        if(start==std::string::npos) break;
+        end = property.find(" ", start );
+
+        if(end==std::string::npos){
+            std::string point = property.substr(start);
+            strPoints.push_back(point);
+            break;
+        }
+
+        std::string point = property.substr(start, end - start);
+        strPoints.push_back(point);
+        start = end + 1;
+    }
+
+    for (vector<string>::iterator strPoint = strPoints.begin(); strPoint != strPoints.end(); ++strPoint)
+    {
+        std::size_t indexX = (*strPoint).find(",");
+        std::string strX = (*strPoint).substr(0, indexX);
+        std::string strY = (*strPoint).substr(indexX).substr(1);
+
+        int x = std::stoi(strX);
+        int y = std::stoi(strY);
+        points.push_back(Point(x, y));
+    }
+
+    return points;
+}
+
+const Color getColorFromLine (std::string line, std::string property){
+    std::string strColor = getProperty(line, property); 
+    std::size_t index = strColor.find('"');
+    if(index == std::string::npos) {
+        strColor = strColor.substr(0, strColor.size()-1);
+    }
+    return Color::RED;
+    // return Color::OTHER = Color(strColor);
+}
+
+int getIntProperty(std::string line, std::string property){
+    std::string strValue = getProperty(line, property); 
+    if(strValue == "") return NULL;
+
+    return std::stoi(strValue);;
+}
+
+bool verifyStartFile(std::string line){
+    std:string startComponent = "<svg ";
+    int position = 0;
+
+    while(true){
+        int indexStartBracket = 0;
+        int indexEndBracket = 0;
+
+        indexStartBracket = line.find_first_of("<svg ", position);
+        indexEndBracket = line.find_first_of(">", position + 1);
+        // récupérer hauteur, width, largeur
+        
+        if(indexEndBracket == -1 && indexStartBracket == -1 && position != 0){
+            return true;
+        }
+
+        if(indexEndBracket == -1 || indexStartBracket == - 1 || indexStartBracket >= indexEndBracket){
+            return false;
+        }
+
+        position = indexEndBracket;
+    }
+}
+
+std::string getProperty(std::string line, std::string property){
+    std::string toFindStart = " " + property + "=\"";
+
+    std::size_t start = line.find(toFindStart);
+    if(start==std::string::npos){ return ""; }
+
+    std::size_t end = line.find('"', start);
+    if(end==std::string::npos){ return ""; }
+
+    std::string result = line.substr(start + toFindStart.size(), end - start - 1);
+    return result;
+}
+
+bool isComponent(std::string line, std::string component){
+    std:string startComponent = "<" + component + " ";
+    std::string endComponent = "/>";
+    int position = 0;
+
+    while(true){
+        int indexStartBracket = 0;
+        int indexEndBracket = 0;
+
+        indexStartBracket = line.find(startComponent, position);
+        indexEndBracket = line.find(endComponent, position + 1);
+
+        bool isValid = (indexEndBracket != -1 && indexStartBracket != -1 && indexStartBracket >= indexEndBracket) || indexEndBracket == -1 && indexStartBracket == -1 && position != 0;
+        bool isError = indexEndBracket == -1 || indexStartBracket == - 1 || indexStartBracket >= indexEndBracket;
+        if(isValid){ return true; }
+        if(isError){ return false; }
+
+        position = indexEndBracket;
+    }
+    return true;
+}
+
+bool verifyBrackets(std::string line, std::string component){
+    std:string startComponent = "<" + component + " ";
+    std::string endComponent = component == "svg" ? "svg>" : "/>";
+    int position = 0;
+
+    while(true){
+        int indexStartBracket = 0;
+        int indexEndBracket = 0;
+
+        indexStartBracket = line.find_first_of(startComponent, position);
+        indexEndBracket = line.find_first_of(endComponent, position + 1);
+        
+        if(indexEndBracket == -1 && indexStartBracket == -1 && position != 0){
+            return true;
+        }
+
+        if(indexEndBracket == -1 || indexStartBracket == - 1 || indexStartBracket >= indexEndBracket){
+            return false;
+        }
+
+        position = indexEndBracket;
+    }
+}
+
+bool getComponent(std::string line, string component){
+    std:string startComponent = "<" + component;
+    std::string endComponent = component == "svg" ? "svg>" : "/>";
+    int position = 0;
+
+    while(true){
+        int indexStartBracket = line.find_first_of(startComponent, position);
+        int indexEndBracket = line.find_first_of(endComponent, position + 1);
+        
+        if(indexEndBracket == -1 && indexStartBracket == -1 && position != 0){
+            return true;
+        }
+
+        if(indexEndBracket == -1 || indexStartBracket == - 1 || indexStartBracket >= indexEndBracket){
+            return false;
+        }
+
+        position = indexEndBracket;
+    }
 }
 
 // Menu 3.1 (Edition d'un dessin)
