@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <typeinfo>
+#include <limits>
 
 
 #include "shapes/point.hpp"
