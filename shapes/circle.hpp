@@ -11,22 +11,6 @@ private:
     int m_radius;
     Point m_center;
 
-protected:
-    // void print(std::ostream& os) const{ 
-    //     os << "<circle ";
-    //     os << "cx=\"" + this->getCenter().getX();
-    //     os << "\" cy=\"" + this->getCenter().getY();
-    //     os << "\" r=\"" + this->getRadius();
-    //     os << "\" fill=\"" + this->getFillColor().getString();
-    //     os << "\" stroke=\"" + this->getStroke();
-    //     os << "\" stroke-width=\"" + this->getStrokeColor().getString();
-    //     os << "\" />" << std::endl;
-    // }
-
-    // friend std::ostream& operator<< (std::ostream& os, const Circle& circle){
-    //     return os << circle;
-    // }
-
 public:
     Circle(int radius, Point center, int stroke, Color strokeColor, Color fillColor);
     virtual ~Circle();
@@ -34,9 +18,15 @@ public:
     int getRadius() const;
     Point getCenter() const;
 
-
+    Circle operator*(int multi);				 	  	  	  	  
+    Circle operator+(int value);				 	  	  	  	  
 
 };
 
+Circle operator*(const Circle &c, int multi);
+Circle operator*(int multi, const Circle &c);
+
+Circle operator+(const Circle &c, int value);
+Circle operator+(int value, const Circle &c);
 
 #endif
