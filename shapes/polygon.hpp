@@ -18,14 +18,14 @@ public:
     int getNumbersOfPoints() const;
     std::vector<Point> getPoints() const;
 
-    Polygon operator*(int multi);				 	  	  	  	  
-    Polygon operator+(int value);
+    // Polygon operator*(int multi);				 	  	  	  	  
+    // Polygon operator+(int value);
 };
 
 
-Polygon operator*(const Polygon &p, int multi);
-Polygon operator*(int multi, const Polygon &p);
+// Polygon operator*(const Polygon &p, int multi);
+// Polygon operator*(int multi, const Polygon &p);
 
-Polygon operator+(const Polygon &p, int value);
-Polygon operator+(int value, const Polygon &p);
+// Polygon operator+(const Polygon &p, int value);
+// Polygon operator+(int value, const Polygon &p);
 #endif

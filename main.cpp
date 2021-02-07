@@ -703,38 +703,38 @@ void moveShapes(vector<vector<Shape *> > &shapes) {
     vector<Polygon>polygons;;
 
 
-   for (int i = 0; i < shapes.size(); i++) {
-        for (int j = 0; j < shapes[i].size(); j++) {
-            switch (i)
-            {
-            case 0: {
-                Rectangle *rect = dynamic_cast<Rectangle*>(shapes[0][i]);
-                Rectangle result = Rectangle(rect->getPoint(), rect->getWidth(), rect->getHeight(), rect->getStroke(), rect->getStrokeColor(), rect->getFillColor()) + value;
-                rectangles.push_back(result);
-                break;
-            }
-            case 1: {
-                Circle *circle = dynamic_cast<Circle*>(shapes[1][j]);
-                Circle result = Circle(circle->getRadius(), circle->getCenter(), circle->getStroke(), circle->getStrokeColor(), circle->getFillColor()) + value;
-                circles.push_back(result);
-            }
-            case 2: {
-                Stroke *stroke = dynamic_cast<Stroke*>(shapes[2][j]);
-                Stroke result = Stroke(stroke->getFirstPoint(), stroke->getSecondPoint(), stroke->getStroke(), stroke->getStrokeColor(), stroke->getFillColor()) + value;
-                strokes.push_back(result);
-                break;
-            }
-            case 3: {
-                Polygon *polygon = dynamic_cast<Polygon*>(shapes[3][j]);
-                Polygon result = Polygon(polygon->getNumbersOfPoints(), polygon->getPoints(), polygon->getStroke(), polygon->getStrokeColor(), polygon->getFillColor()) + value;
-                polygons.push_back(result);
-                break;
-            }
-            default:
-                break;
-            }
-        }
-    }
+//    for (int i = 0; i < shapes.size(); i++) {
+//         for (int j = 0; j < shapes[i].size(); j++) {
+//             switch (i)
+//             {
+//             case 0: {
+//                 Rectangle *rect = dynamic_cast<Rectangle*>(shapes[0][i]);
+//                 Rectangle result = Rectangle(rect->getPoint(), rect->getWidth(), rect->getHeight(), rect->getStroke(), rect->getStrokeColor(), rect->getFillColor()) + value;
+//                 rectangles.push_back(result);
+//                 break;
+//             }
+//             case 1: {
+//                 Circle *circle = dynamic_cast<Circle*>(shapes[1][j]);
+//                 Circle result = Circle(circle->getRadius(), circle->getCenter(), circle->getStroke(), circle->getStrokeColor(), circle->getFillColor()) + value;
+//                 circles.push_back(result);
+//             }
+//             case 2: {
+//                 Stroke *stroke = dynamic_cast<Stroke*>(shapes[2][j]);
+//                 Stroke result = Stroke(stroke->getFirstPoint(), stroke->getSecondPoint(), stroke->getStroke(), stroke->getStrokeColor(), stroke->getFillColor()) + value;
+//                 strokes.push_back(result);
+//                 break;
+//             }
+//             case 3: {
+//                 Polygon *polygon = dynamic_cast<Polygon*>(shapes[3][j]);
+//                 // Polygon result = Polygon(polygon->getNumbersOfPoints(), polygon->getPoints(), polygon->getStroke(), polygon->getStrokeColor(), polygon->getFillColor()) + value;
+//                 polygons.push_back(*polygon);
+//                 break;
+//             }
+//             default:
+//                 break;
+//             }
+//         }
+//     }
 
     vector<vector<Shape *>>sh = {
         { rectangles.begin(), rectangles.end() },
@@ -744,7 +744,10 @@ void moveShapes(vector<vector<Shape *> > &shapes) {
     };
 
     
-    shapes = sh;
+    // shapes = sh;
+        cout << "Appuyez sur \"Entrée\" pour continuer..." << endl;
+    fflush(stdin);
+    while (getchar() != '\n');
 }
 
 // Menu 4.5 (5 - Agrandir tous les éléments du dessin)
@@ -759,38 +762,38 @@ void upScaleShapes(vector<vector<Shape *>> &shapes) {
     vector<Polygon>polygons;;
 
 
-   for (int i = 0; i < shapes.size(); i++) {
-        for (int j = 0; j < shapes[i].size(); j++) {
-            switch (i)
-            {
-            case 0: {
-                Rectangle *rect = dynamic_cast<Rectangle*>(shapes[0][i]);
-                Rectangle result = Rectangle(rect->getPoint(), rect->getWidth(), rect->getHeight(), rect->getStroke(), rect->getStrokeColor(), rect->getFillColor()) * multi;
-                rectangles.push_back(result);
-                break;
-            }
-            case 1: {
-                Circle *circle = dynamic_cast<Circle*>(shapes[1][j]);
-                Circle result = Circle(circle->getRadius(), circle->getCenter(), circle->getStroke(), circle->getStrokeColor(), circle->getFillColor()) * multi;
-                circles.push_back(result);
-            }
-            case 2: {
-                Stroke *stroke = dynamic_cast<Stroke*>(shapes[2][j]);
-                Stroke result = Stroke(stroke->getFirstPoint(), stroke->getSecondPoint(), stroke->getStroke(), stroke->getStrokeColor(), stroke->getFillColor()) * multi;
-                strokes.push_back(result);
-                break;
-            }
-            case 3: {
-                Polygon *polygon = dynamic_cast<Polygon*>(shapes[3][j]);
-                Polygon result = Polygon(polygon->getNumbersOfPoints(), polygon->getPoints(), polygon->getStroke(), polygon->getStrokeColor(), polygon->getFillColor()) * multi;
-                polygons.push_back(result);
-                break;
-            }
-            default:
-                break;
-            }
-        }
-    }
+//    for (int i = 0; i < shapes.size(); i++) {
+//         for (int j = 0; j < shapes[i].size(); j++) {
+//             switch (i)
+//             {
+//             case 0: {
+//                 Rectangle *rect = dynamic_cast<Rectangle*>(shapes[0][i]);
+//                 Rectangle result = Rectangle(rect->getPoint(), rect->getWidth(), rect->getHeight(), rect->getStroke(), rect->getStrokeColor(), rect->getFillColor()) * multi;
+//                 rectangles.push_back(result);
+//                 break;
+//             }
+//             case 1: {
+//                 Circle *circle = dynamic_cast<Circle*>(shapes[1][j]);
+//                 Circle result = Circle(circle->getRadius(), circle->getCenter(), circle->getStroke(), circle->getStrokeColor(), circle->getFillColor()) * multi;
+//                 circles.push_back(result);
+//             }
+//             case 2: {
+//                 Stroke *stroke = dynamic_cast<Stroke*>(shapes[2][j]);
+//                 Stroke result = Stroke(stroke->getFirstPoint(), stroke->getSecondPoint(), stroke->getStroke(), stroke->getStrokeColor(), stroke->getFillColor()) * multi;
+//                 strokes.push_back(result);
+//                 break;
+//             }
+//             case 3: {
+//                 Polygon *polygon = dynamic_cast<Polygon*>(shapes[3][j]);
+//                 // Polygon result = Polygon(polygon->getNumbersOfPoints(), polygon->getPoints(), polygon->getStroke(), polygon->getStrokeColor(), polygon->getFillColor()) * multi;
+//                 polygons.push_back(*polygon);
+//                 break;
+//             }
+//             default:
+//                 break;
+//             }
+//         }
+//     }
 
     vector<vector<Shape *>>sh = {
         { rectangles.begin(), rectangles.end() },
@@ -800,7 +803,7 @@ void upScaleShapes(vector<vector<Shape *>> &shapes) {
     };
 
     
-    shapes = sh;
+    // shapes = sh;
     cout << "Appuyez sur \"Entrée\" pour continuer..." << endl;
     fflush(stdin);
     while (getchar() != '\n');
