@@ -135,8 +135,7 @@ void drawEditor(Svg svg) {
         case 6:
             cout << "Sauvegarder" << endl << endl;
             saveSvg(svg);
-            // TODO
-            break;
+            return;
         case 7:
             cout << "Annuler" << endl << endl;
             // TODO
@@ -399,12 +398,72 @@ void upScaleShapes(vector<vector<Shape *> > &shapes) {
 }
 
 void saveSvg(Svg svg) {
-    /*
-        On va créer un fichier.
-        A l'aide d'une fonction qui va parser nos objets, on créer une string qui va
-        faire le contenu du fichier.
-        On prends en exemple le svg
-    */
+    cout << " || SAUVEGARDE DU DESSIN ||" << endl << endl;
+    cout << "Sauvegarde en cours..." << endl;
+    string dataOut;
+    dataOut.append("<?xml version=\"1.0\" standalone=\"no\"?>\n");
+    dataOut.append("<svg width=\"" + to_string(svg.getWidth()) + "\" height=\"" + to_string(svg.getHeight()) + "\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\n");
+    for (int i = 0; i < svg.getShapes().size(); i++) {
+        for (int j = 0; j < svg.getShapes()[i].size(); j++) {
+            switch (i)
+            {
+            case 0: {
+                Rectangle *rect = dynamic_cast<Rectangle*>(svg.getShapes()[0][j]);
+                dataOut.append("  <rect x=\"" + to_string(rect->getPoint().getX()) + 
+                "\" y=\"" + to_string(rect->getPoint().getY()) +
+                "\" width=\"" + to_string(rect->getWidth()) + 
+                "\" height=\"" + to_string(rect->getHeight()) +
+                "\" stroke=\"" + rect->getStrokeColor().getString() +
+                "\" fill=\"" + rect->getFillColor().getString() +
+                "\" stroke-width=\"" + to_string(rect->getStroke()) + "\"/>\n");
+                break;
+            }
+            case 1: {
+                Circle *circle = dynamic_cast<Circle*>(svg.getShapes()[1][j]);
+                dataOut.append("  <circle cx=\"" + to_string(circle->getCenter().getX()) + 
+                "\" cy=\"" + to_string(circle->getCenter().getY()) +
+                "\" r=\"" + to_string(circle->getRadius()) + 
+                "\" stroke=\"" + circle->getStrokeColor().getString() +
+                "\" fill=\"" + circle->getFillColor().getString() +
+                "\" stroke-width=\"" + to_string(circle->getStroke()) + "\"/>\n");
+                break;
+            }
+            case 2: {
+                Stroke *stroke = dynamic_cast<Stroke*>(svg.getShapes()[2][j]);
+                dataOut.append("  <line x1=\"" + to_string(stroke->getFirstPoint().getX()) + 
+                "\" x2=\"" + to_string(stroke->getSecondPoint().getX()) +
+                "\" y1=\"" + to_string(stroke->getFirstPoint().getY()) + 
+                "\" y2=\"" + to_string(stroke->getSecondPoint().getY()) +
+                "\" stroke=\"" + stroke->getStrokeColor().getString() +
+                "\" fill=\"" + stroke->getFillColor().getString() +
+                "\" stroke-width=\"" + to_string(stroke->getStroke()) + "\"/>\n");
+                break;
+            }
+            case 3: {
+                Polygon *polygon = dynamic_cast<Polygon*>(svg.getShapes()[3][j]);
+                dataOut.append("  <polygon points=\"");
+                for (int k = 0; k < polygon->getPoints().size(); k++) {
+                    dataOut.append(to_string(polygon->getPoints()[k].getX()) + " " + to_string(polygon->getPoints()[k].getY()));
+                    if (k < polygon->getPoints().size() - 1) {
+                        dataOut.append(" ");
+                    }
+                }
+                dataOut.append("\" stroke=\"" + polygon->getStrokeColor().getString() +
+                "\" fill=\"" + polygon->getFillColor().getString() +
+                "\" stroke-width=\"" + to_string(polygon->getStroke()) + "\"/>\n");
+                break;
+            }
+            default:
+                break;
+            }
+        }
+    }
+    dataOut.append("</svg>");
+
+    ofstream outFile(svg.getName() + ".svg");
+    outFile << dataOut << endl;
+    outFile.close();
+    cout << "Sauvegarde terminée !" << endl;
 }
 
 int getValueFromUser(string userMessage) {
