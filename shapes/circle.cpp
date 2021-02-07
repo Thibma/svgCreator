@@ -43,16 +43,16 @@ Circle operator*(int multi, const Circle &c){
 }
 
 Circle Circle::operator+(int value) {
-        Color strokeColor = this->getStrokeColor();
-        Color fillColor = this->getFillColor();
-        int stroke = this->getStroke();
-        int radius = this->getRadius();
-        int x = this->getCenter().getX() + value;
-        int y = this->getCenter().getY() + value;
-        Point center = Point(x, y);
+    Color strokeColor = this->getStrokeColor();
+    Color fillColor = this->getFillColor();
+    int stroke = this->getStroke();
+    int radius = this->getRadius();
+    int x = this->getCenter().getX() + value;
+    int y = this->getCenter().getY() + value;
+    Point center = Point(x, y);
 
-        Circle result = Circle(radius, center, stroke, strokeColor, fillColor);
-        return result;
+    Circle result = Circle(radius, center, stroke, strokeColor, fillColor);
+    return result;
 }
  
 Circle operator+(const Circle &c, int value){

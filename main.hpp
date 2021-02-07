@@ -52,7 +52,7 @@ bool isComponent(std::string line, std::string component);
 bool verifyBrackets(std::string line, std::string component);
 vector<Point> getPointsFromLine(std::string line);
 
-const Color getColorFromLine (std::string line, std::string property);
+Color getColorFromLine (std::string line, std::string property);
 Rectangle *getRectangleFromLine(std::string line);
 Circle* getCircleFromLine(std::string line);
 Svg getSvgFromLine(std::string line, std::string name);

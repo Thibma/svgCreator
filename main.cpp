@@ -284,14 +284,15 @@ vector<Point> getPointsFromLine(std::string line){
     return points;
 }
 
-const Color getColorFromLine (std::string line, std::string property){
+Color getColorFromLine (std::string line, std::string property){
     std::string strColor = getProperty(line, property); 
     std::size_t index = strColor.find('"');
     if(index == std::string::npos) {
         strColor = strColor.substr(0, strColor.size()-1);
     }
-    return Color::RED;
-    // return Color::OTHER = Color(strColor);
+
+    Color color (strColor);
+    return color;
 }
 
 int getIntProperty(std::string line, std::string property){
@@ -692,28 +693,117 @@ void fusionDraw(Svg &svg) {
 
 // Menu 4.4 (4 - Décaler tous les éléments du dessin)
 void moveShapes(vector<vector<Shape *> > &shapes) {
-    /*
-        On passe l'adresse des formes (pour directement le modifier)
-        On demande a l'utilisateur un point (x,y) qui va décaler les points
-        On fait une boucle qui va modifier tous les points de chaque shapes
-        (rectangle : x et y,
-         cercle : centre,
-         segment : les deux points,
-         polygone : tous les points)
-    */
+    cout << endl << endl << " || MOVE SHAPES ||" << endl << endl;
+
+    int value = getValueFromUser("Choisir la valeur de déplacement :");
+
+    vector<Rectangle>rectangles;
+    vector<Circle>circles;
+    vector<Stroke> strokes;
+    vector<Polygon>polygons;;
+
+
+   for (int i = 0; i < shapes.size(); i++) {
+        for (int j = 0; j < shapes[i].size(); j++) {
+            switch (i)
+            {
+            case 0: {
+                Rectangle *rect = dynamic_cast<Rectangle*>(shapes[0][i]);
+                Rectangle result = Rectangle(rect->getPoint(), rect->getWidth(), rect->getHeight(), rect->getStroke(), rect->getStrokeColor(), rect->getFillColor()) + value;
+                rectangles.push_back(result);
+                break;
+            }
+            case 1: {
+                Circle *circle = dynamic_cast<Circle*>(shapes[1][j]);
+                Circle result = Circle(circle->getRadius(), circle->getCenter(), circle->getStroke(), circle->getStrokeColor(), circle->getFillColor()) + value;
+                circles.push_back(result);
+            }
+            case 2: {
+                Stroke *stroke = dynamic_cast<Stroke*>(shapes[2][j]);
+                Stroke result = Stroke(stroke->getFirstPoint(), stroke->getSecondPoint(), stroke->getStroke(), stroke->getStrokeColor(), stroke->getFillColor()) + value;
+                strokes.push_back(result);
+                break;
+            }
+            case 3: {
+                Polygon *polygon = dynamic_cast<Polygon*>(shapes[3][j]);
+                Polygon result = Polygon(polygon->getNumbersOfPoints(), polygon->getPoints(), polygon->getStroke(), polygon->getStrokeColor(), polygon->getFillColor()) + value;
+                polygons.push_back(result);
+                break;
+            }
+            default:
+                break;
+            }
+        }
+    }
+
+    vector<vector<Shape *>>sh = {
+        { rectangles.begin(), rectangles.end() },
+        { circles.begin(), circles.end() },
+        { strokes.begin(), strokes.end() },
+        { polygons.begin(), polygons.end() }
+    };
+
+    
+    shapes = sh;
 }
 
 // Menu 4.5 (5 - Agrandir tous les éléments du dessin)
-void upScaleShapes(vector<vector<Shape *> > &shapes) {
-    /*
-        On passe l'adresse des formes (pour directement le modifier)
-        On demande à l'utilisateur un facteur d'agrandissement (positif obligé)
-        On fait une boucle qui va modifier les tailles de chaque shapes en multipliant par le facteur
-        (rectangle : width et height,
-         cercle : rayon,
-         segment : les deux points (mais jsp comment),
-         polygone : tous les points (mais jsp comment))
-    */
+void upScaleShapes(vector<vector<Shape *>> &shapes) {
+    cout << endl << endl << " || UPSCALE ||" << endl << endl;
+
+    int multi = getValueFromUser("Choisir la valeur d'upscale :");
+
+    vector<Rectangle>rectangles;
+    vector<Circle>circles;
+    vector<Stroke> strokes;
+    vector<Polygon>polygons;;
+
+
+   for (int i = 0; i < shapes.size(); i++) {
+        for (int j = 0; j < shapes[i].size(); j++) {
+            switch (i)
+            {
+            case 0: {
+                Rectangle *rect = dynamic_cast<Rectangle*>(shapes[0][i]);
+                Rectangle result = Rectangle(rect->getPoint(), rect->getWidth(), rect->getHeight(), rect->getStroke(), rect->getStrokeColor(), rect->getFillColor()) * multi;
+                rectangles.push_back(result);
+                break;
+            }
+            case 1: {
+                Circle *circle = dynamic_cast<Circle*>(shapes[1][j]);
+                Circle result = Circle(circle->getRadius(), circle->getCenter(), circle->getStroke(), circle->getStrokeColor(), circle->getFillColor()) * multi;
+                circles.push_back(result);
+            }
+            case 2: {
+                Stroke *stroke = dynamic_cast<Stroke*>(shapes[2][j]);
+                Stroke result = Stroke(stroke->getFirstPoint(), stroke->getSecondPoint(), stroke->getStroke(), stroke->getStrokeColor(), stroke->getFillColor()) * multi;
+                strokes.push_back(result);
+                break;
+            }
+            case 3: {
+                Polygon *polygon = dynamic_cast<Polygon*>(shapes[3][j]);
+                Polygon result = Polygon(polygon->getNumbersOfPoints(), polygon->getPoints(), polygon->getStroke(), polygon->getStrokeColor(), polygon->getFillColor()) * multi;
+                polygons.push_back(result);
+                break;
+            }
+            default:
+                break;
+            }
+        }
+    }
+
+    vector<vector<Shape *>>sh = {
+        { rectangles.begin(), rectangles.end() },
+        { circles.begin(), circles.end() },
+        { strokes.begin(), strokes.end() },
+        { polygons.begin(), polygons.end() }
+    };
+
+    
+    shapes = sh;
+    cout << "Appuyez sur \"Entrée\" pour continuer..." << endl;
+    fflush(stdin);
+    while (getchar() != '\n');
 }
 
 void saveSvg(Svg svg) {
