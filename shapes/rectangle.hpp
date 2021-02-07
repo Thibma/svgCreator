@@ -7,23 +7,6 @@
 #include "point.hpp"
 
 class Rectangle : public Shape {
-// protected:
-//     void print(std::ostream& os) const { 
-//         os << "<rect ";
-//         os << "x=\"" + this->getPoint().getX();
-//         os << "\" cx=\"" + this->getPoint().getX();
-//         os << "\" width\"" + this->getWidth();
-//         os << "\" width\"" + this->getHeight();
-//         os << "\" fill=\"" + this->getFillColor().getString();
-//         os << "\" stroke=\"" + this->getStroke();
-//         os << "\" stroke-width=\"" + this->getStrokeColor().getString();
-//         os << "\" />" << std::endl;
-//     }
-
-//     friend std::ostream& operator<< (std::ostream& os, const Rectangle& rect){
-//         return os << rect;
-//     }
-
 public:
     Rectangle(Point point, int width, int height, int stroke, Color strokeColor, Color fillColor);
     virtual ~Rectangle();
@@ -32,12 +15,19 @@ public:
     int getWidth() const;
     int getHeight() const;
 
-    
+    Rectangle operator*(int multi);				 	  	  	  	  
+    Rectangle operator+(int value);				 	  	  	  	  
 
 private:
     Point m_point;
     int m_width;
     int m_height;
 };
+
+Rectangle operator*(const Rectangle &rect, int multi);
+Rectangle operator*(int multi, const Rectangle &rect);
+
+Rectangle operator+(const Rectangle &rect, int value);
+Rectangle operator+(int value, const Rectangle &rect);
 
 #endif
