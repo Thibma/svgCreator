@@ -2,6 +2,7 @@
 #define MAIN_HPP
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <typeinfo>
 #include <limits>
