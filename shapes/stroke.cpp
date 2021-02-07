@@ -56,7 +56,10 @@ Stroke Stroke::operator+(int value) {
 
         int x2 = this->getSecondPoint().getX() + value;
         int y2 = this->getSecondPoint().getY() + value;
-        Point firstPoint = this->getFirstPoint();
+
+        int x1 = this->getFirstPoint().getX() + value;
+        int y1 = this->getFirstPoint().getY() + value;
+        Point firstPoint = Point(x1, y1);
         Point secondPoint = Point(x2, y2);
 
         Stroke result = Stroke(firstPoint, secondPoint, stroke, strokeColor, fillColor);
@@ -70,7 +73,10 @@ Stroke operator+(const Stroke &str, int value){
 
     int x2 = str.getSecondPoint().getX() + value;
     int y2 = str.getSecondPoint().getY() + value;
-    Point firstPoint = str.getFirstPoint();
+
+    int x1 = str.getFirstPoint().getX() + value;
+    int y1 = str.getFirstPoint().getY() + value;
+    Point firstPoint = Point(x1, y1);
     Point secondPoint = Point(x2, y2);
 
     Stroke result = Stroke(firstPoint, secondPoint, stroke, strokeColor, fillColor);
