@@ -11,6 +11,13 @@ private:
     int m_numbersOfPoints;
     std::vector<Point> m_points;
 
+// protected:
+//     void print(std::ostream& os) const{ 
+//     }
+//     friend std::ostream& operator<< (std::ostream& os, const Polygon& polygon){
+//         return os << polygon;
+//     }
+
 public:
     Polygon(int numbersOfPoints, std::vector<Point> points, int stroke, Color strokeColor, Color fillColor);
     virtual ~Polygon();

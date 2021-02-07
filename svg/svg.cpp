@@ -32,3 +32,23 @@ std::vector<std::vector<Shape *> > &Svg::getShapes() {
 void Svg::setShapes(std::vector<std::vector<Shape *> > shapes) {
     this->m_shapes = shapes;
 }
+
+// void Svg::save(){
+//     std::ofstream MyFile(getName() + ".svg");
+//     MyFile << "<?xml version=\"1.0\" standalone=\"no\"?>" << std::endl;
+//     MyFile << "<svg width=\"" << getWidth() << "cm\" height=\"" << getHeight() << "cm\" version=\"1.1\"" << std::endl;
+    
+//     std::vector<std::vector<Shape *>>::const_iterator shapes; 
+//     std::vector<Shape *>::const_iterator shape; 
+
+//     for(shapes = m_shapes.begin(); shapes != m_shapes.end(); ++shapes){
+
+//          for (shape = shapes->begin(); shape != shapes->end(); ++shape)
+//          { 
+//             std::cout << *shape << std::endl;
+//             MyFile << *shape << std::endl;
+//          } 
+//     }
+
+//     MyFile.close();
+// }

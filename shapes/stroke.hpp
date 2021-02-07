@@ -9,6 +9,14 @@ private:
     Point m_firstPoint;
     Point m_secondPoint;
 
+// protected:
+//     void print(std::ostream& os) const{ 
+//     }
+
+//     friend std::ostream& operator<< (std::ostream& os, const Stroke& stroke){
+//         return os << stroke;
+//     }
+
 public:
     Stroke(Point firstPoint, Point secondPoint, int stroke, Color strokeColor, Color fillColor);
     virtual ~Stroke();
@@ -16,6 +24,8 @@ public:
     Point getFirstPoint();
     Point getSecondPoint();
 };
+
+
 
 
 #endif

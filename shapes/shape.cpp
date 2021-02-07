@@ -10,14 +10,18 @@ Shape::~Shape() {
     
 }
 
-int Shape::getStroke() {
+int Shape::getStroke() const {
     return this->m_stroke;
 }
 
-Color Shape::getStrokeColor() {
+Color Shape::getStrokeColor() const {
     return this->m_strokeColor;
 }
 
-Color Shape::getFillColor() {
+Color Shape::getFillColor() const {
     return this->m_fillColor;
 }
+
+// std::ostream& operator<< (std::ostream& os, const Shape& shape) {
+//     return os << shape;
+// }

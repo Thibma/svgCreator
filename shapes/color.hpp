@@ -15,6 +15,7 @@ public:
     static const Color TRANSPARENT;
 
     static const Color NOCOLOR;
+    static const Color OTHER;
 
     std::string getString();
     Color();

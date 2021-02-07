@@ -9,10 +9,10 @@ Circle::~Circle() {
     
 }
 
-int Circle::getRadius() {
+int Circle::getRadius() const{
     return this->m_radius;
 }
 
-Point Circle::getCenter() {
+Point Circle::getCenter() const{
     return this->m_center;
 }

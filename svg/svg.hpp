@@ -3,6 +3,9 @@
 
 #include <vector>
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 #include "../shapes/shape.hpp"
 
@@ -23,6 +26,10 @@ public:
 
     std::vector<std::vector<Shape *> > &getShapes();
     void setShapes(std::vector<std::vector<Shape *> > shapes);
+    void save();
+
+
+
 };
 
 #endif
