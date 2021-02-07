@@ -20,3 +20,4 @@ const Color Color::BLACK = Color("black");
 const Color Color::TRANSPARENT = Color("transparent");
 
 const Color Color::NOCOLOR = Color("null");
+static const Color OTHER;

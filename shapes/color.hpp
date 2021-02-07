@@ -18,11 +18,11 @@ public:
     static const Color OTHER;
 
     std::string getString();
+    Color(std::string svgString);
     Color();
 
 private:
     std::string m_string;
-    Color(std::string svgString);
 
 };
 
