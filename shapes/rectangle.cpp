@@ -54,21 +54,23 @@ Rectangle Rectangle::operator+(int value) {
         Color strokeColor = this->getStrokeColor();
         Color fillColor = this->getFillColor();
         int stroke = this->getStroke();
-        int width = m_width + value;
-        int height = m_height + value;
+        int x = this->getPoint().getX() + value;
+        int y = this->getPoint().getY() + value;
+        Point point = Point(x, y);
 
-        Rectangle result = Rectangle(m_point, width, height, stroke, strokeColor, fillColor);
+        Rectangle result = Rectangle(point, m_width, m_height, stroke, strokeColor, fillColor);
         return result;
 }
  
 Rectangle operator+(const Rectangle &rect, int value){
-
-    Point point = rect.getPoint();
     Color strokeColor = rect.getStrokeColor();
     Color fillColor = rect.getFillColor();
     int stroke = rect.getStroke();
-    int width = rect.getWidth() + value;
-    int height = rect.getHeight() + value;
+    int width = rect.getWidth();
+    int height = rect.getHeight();
+    int x = rect.getPoint().getX() + value;
+    int y = rect.getPoint().getY() + value;
+    Point point = Point(x, y);
 
     Rectangle result = Rectangle(point, width, height, stroke, strokeColor, fillColor);
     return result;
