@@ -54,6 +54,7 @@ bool verifyBrackets(std::string line, std::string component);
 vector<Point> getPointsFromLine(std::string line);
 
 Color getColorFromLine (std::string line, std::string property);
+std::string getProperty2(std::string line, std::string property);
 Rectangle *getRectangleFromLine(std::string line);
 Circle* getCircleFromLine(std::string line);
 Svg getSvgFromLine(std::string line, std::string name);

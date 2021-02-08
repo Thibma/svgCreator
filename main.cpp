@@ -94,7 +94,7 @@ void loadADraw() {
         menu = filename.find(".svg") == std::string::npos;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
+        
     } while(menu);   
     
     parser(filename);
@@ -234,16 +234,16 @@ Polygon *getPolygonFromLine(std::string line){
 
 Stroke *getStrokeFromLine(std::string line){
     int x1 = getIntProperty(line, "x1");
-    if(!x1) throw "Stroke Width missing";
+    if(!x1) throw "x1 missing";
 
     int y1 = getIntProperty(line, "y1");
-    if(!y1) throw "Stroke Width missing";
+    if(!y1) throw "y1 missing";
 
     int x2 = getIntProperty(line, "x2");
-    if(!x2) throw "Stroke Width missing";
+    if(!x2) throw "x2 missing";
 
     int y2 = getIntProperty(line, "y2");
-    if(!y2) throw "Stroke Width missing";
+    if(!y2) throw "y2 missing";
 
     int strokeWidth = getIntProperty(line, "stroke-width");    
     if(!strokeWidth) throw "Stroke Width missing";
@@ -294,12 +294,7 @@ vector<Point> getPointsFromLine(std::string line){
 }
 
 Color getColorFromLine (std::string line, std::string property){
-    std::string strColor = getProperty(line, property); 
-    std::size_t index = strColor.find('"');
-    if(index == std::string::npos) {
-        strColor = strColor.substr(0, strColor.size()-1);
-    }
-
+    std::string strColor = getProperty2(line, property); 
     Color color (strColor);
     return color;
 }
@@ -330,8 +325,8 @@ bool verifyComponent(std::string line, std::string startComponent, std::string e
         int indexStartBracket = 0;
         int indexEndBracket = 0;
 
-        indexStartBracket = line.find_first_of(startComponent, position);
-        indexEndBracket = line.find_first_of(endComponent, position + 1);
+        indexStartBracket = line.find(startComponent, position);
+        indexEndBracket = line.find(endComponent, position + 1);
         
         if(indexEndBracket == -1 && indexStartBracket == -1 && position != 0){
             return true;
@@ -355,6 +350,15 @@ std::string getProperty(std::string line, std::string property){
     if(end==std::string::npos){ return ""; }
 
     std::string result = line.substr(start + toFindStart.size(), end - start - 1);
+    return result;
+}
+
+std::string getProperty2(std::string line, std::string property){
+    std::string toFindStart = " " + property + "=\"";
+    std::size_t start = line.find(toFindStart);
+    std::size_t end = line.find('"', toFindStart.size() + start);
+
+    std::string result = line.substr(start + toFindStart.size(), end - start - toFindStart.size());
     return result;
 }
 
