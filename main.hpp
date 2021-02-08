@@ -43,8 +43,9 @@ int getValueFromUser(string userMessage);
 string getStringFromUser(string userMessage);
 Color getColor(string userMessage);
 
-bool verifyStartFile(std::string line);
-bool verifySVG(std::string line);
+bool verifyComponent(std::string line, std::string startComponent, std::string endComponent);
+bool verifySVGComponent(std::string line);
+bool verifyXMLComponent(std::string line);
 
 int getIntProperty(std::string line, std::string property);
 std::string getProperty(std::string line, std::string property);
@@ -58,5 +59,5 @@ Circle* getCircleFromLine(std::string line);
 Svg getSvgFromLine(std::string line, std::string name);
 Polygon *getPolygonFromLine(std::string line);
 Stroke *getStrokeFromLine(std::string line);
-Svg parser(std::string filename);
+void parser(std::string filename);
 #endif

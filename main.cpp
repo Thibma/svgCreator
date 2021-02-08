@@ -88,35 +88,44 @@ void loadADraw() {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Valeur non valide" << endl << "-> ";
+            continue;
         }
 
         menu = filename.find(".svg") == std::string::npos;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Valeur non valide" << endl << "-> ";
-    } while(menu);   
 
-    Svg svg = parser(filename);
-    drawEditor(svg);
+    } while(menu);   
+    
+    parser(filename);
 }
 
-Svg parser(std::string filename) {
+void parser(std::string filename) {
     std::ifstream infile(filename);
     std::string line;
     vector<Rectangle *> rectangles;
     vector<Circle *> circles;
     vector<Polygon *> polygons;
     vector<Stroke *> strokes;
-    
+
+
     try{
-        if(!std::getline(infile, line) || !verifyStartFile(line)){
-            throw "Fichier illisible";
+        if(infile.fail()){
+            throw "File doesn't exist";
         }
+
+        if(!std::getline(infile, line) || !verifyXMLComponent(line)){
+            throw "Missing xml component";
+        }
+
+        if(!std::getline(infile, line) || !verifySVGComponent(line)){
+            throw "Missing svg component";
+        }
+
         Svg svg = getSvgFromLine(line, filename);
 
         while (std::getline(infile, line))
         {
-            std::cout << line << std::endl;
             std::istringstream iss(line);
 
             try {
@@ -154,7 +163,7 @@ Svg parser(std::string filename) {
 
         svg.setShapes(shapes);
         displayDraw(svg);
-        return svg;
+        drawEditor(svg);
     
     } catch(const char *e){
         std::cout << e << endl;
@@ -302,17 +311,27 @@ int getIntProperty(std::string line, std::string property){
     return std::stoi(strValue);;
 }
 
-bool verifyStartFile(std::string line){
+bool verifyXMLComponent(std::string line) {
+    std:string startComponent = "<?xml ";
+    std::string endComponent = "?>";
+    return verifyComponent(line, startComponent, endComponent);
+}
+
+bool verifySVGComponent(std::string line){
     std:string startComponent = "<svg ";
+    std::string endComponent = ">";
+    return verifyComponent(line, startComponent, endComponent);
+}
+
+bool verifyComponent(std::string line, std::string startComponent, std::string endComponent){ 
     int position = 0;
 
     while(true){
         int indexStartBracket = 0;
         int indexEndBracket = 0;
 
-        indexStartBracket = line.find_first_of("<svg ", position);
-        indexEndBracket = line.find_first_of(">", position + 1);
-        // récupérer hauteur, width, largeur
+        indexStartBracket = line.find_first_of(startComponent, position);
+        indexEndBracket = line.find_first_of(endComponent, position + 1);
         
         if(indexEndBracket == -1 && indexStartBracket == -1 && position != 0){
             return true;
@@ -361,9 +380,9 @@ bool isComponent(std::string line, std::string component){
     return true;
 }
 
-bool verifyBrackets(std::string line, std::string component){
-    std:string startComponent = "<" + component + " ";
-    std::string endComponent = component == "svg" ? "svg>" : "/>";
+bool verifyEndFile(std::string line){
+    std:string startComponent = "<svg";
+    std::string endComponent ="</svg>";
     int position = 0;
 
     while(true){
@@ -872,7 +891,17 @@ void saveSvg(Svg svg) {
     }
     dataOut.append("</svg>");
 
-    ofstream outFile(svg.getName() + ".svg");
+
+    string nameFile;
+    if(svg.getName().find(".svg") == string::npos) {
+        nameFile = svg.getName() + ".svg";
+    }
+    else {
+        nameFile = svg.getName();
+    }
+
+    ofstream outFile(nameFile);
+
     outFile << dataOut << endl;
     outFile.close();
     cout << "Sauvegarde terminée !" << endl;
